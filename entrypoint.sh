@@ -17,10 +17,6 @@ echo ${INPUT_PASSWORD} | docker login -u ${INPUT_USERNAME} --password-stdin ${IN
 DOCKERNAME="${INPUT_NAME}:${BRANCH}"
 BUILDPARAMS="${INPUT_EXTRA_BUILD_PARAMS}"
 
-if [ ! -z "${INPUT_DOCKERNAME_APPENDIX}" ]; then
-  DOCKERNAME="$DOCKERNAME${INPUT_DOCKERNAME_APPENDIX}"
-fi
-
 if [ ! -z "${INPUT_DOCKERFILE}" ]; then
   BUILDPARAMS="$BUILDPARAMS -f ${INPUT_DOCKERFILE}"
 fi
@@ -32,8 +28,7 @@ fi
 
 
 DOCKER_TAG=$(echo ${GITHUB_REF} | sed -e 's/refs\/tags\/v//')
-docker build $BUILDPARAMS -t ${INPUT_NAME}:${DOCKER_TAG} .
-docker push ${INPUT_NAME}:latest
-docker push ${INPUT_NAME}:${DOCKER_TAG}
+docker build $BUILDPARAMS -t ${DOCKERNAME} .
+docker push ${DOCKERNAME}
 
 docker logout
