@@ -21,13 +21,9 @@ if [ ! -z "${INPUT_DOCKERFILE}" ]; then
   BUILDPARAMS="$BUILDPARAMS -f ${INPUT_DOCKERFILE}"
 fi
 
-if [ ! -z "${INPUT_CACHE}" ]; then
-  docker pull ${DOCKERNAME}
-  BUILDPARAMS="$BUILDPARAMS --cache-from ${DOCKERNAME}"
-fi
-
 
 DOCKER_TAG=$(echo ${GITHUB_REF} | sed -e 's/refs\/tags\/v//')
+echo ${DOCKERNAME}
 docker build $BUILDPARAMS -t ${DOCKERNAME} .
 docker push ${DOCKERNAME}
 
