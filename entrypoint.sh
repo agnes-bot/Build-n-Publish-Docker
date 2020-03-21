@@ -25,7 +25,7 @@ fi
 DOCKER_TAG=$(echo ${GITHUB_REF} | sed -e 's/refs\/tags\/v//')
 echo ${DOCKERNAME}
 docker build $BUILDPARAMS -t ${DOCKERNAME} .
-docker run --rm ${DOCKERNAME} python test.py
+docker run -p 5000:5000 --rm ${DOCKERNAME} python test.py
 docker push ${DOCKERNAME}
 
 docker logout
