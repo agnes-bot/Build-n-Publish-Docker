@@ -29,3 +29,11 @@ docker run -p 5000:5000 --rm ${DOCKERNAME} python test.py
 docker push ${DOCKERNAME}
 
 docker logout
+
+README_FILEPATH="./README.md"
+
+LOGIN_PAYLOAD="{\"username\": \"${INPUT_USERNAME}\", \"password\": \"${INPUT_PASSWORD}\"}"
+TOKEN=$(curl -s -H "Content-Type: application/json" -X POST -d ${LOGIN_PAYLOAD} https://hub.docker.com/v2/users/login/ | jq -r .token)
+
+REPO_URL="https://hub.docker.com/v2/repositories/${INPUT_NAME}/"
+RESPONSE_CODE=$(curl -s --write-out %{response_code} --output /dev/null -H "Authorization: JWT ${TOKEN}" -X PATCH --data-urlencode full_description@${README_FILEPATH} ${REPO_URL})
