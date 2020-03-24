@@ -10,7 +10,8 @@ LABEL "maintainer"="Rotinov Egor"
 RUN apk update \
   && apk upgrade \
   && apk add --no-cache git \
-  && apk add --no-cache curl
+  && apk add --no-cache curl \
+  && apk add --no-cache jq
 
 ADD entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
